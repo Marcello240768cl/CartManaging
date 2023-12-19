@@ -48,7 +48,7 @@ $carrello=array_values($carrello);
 //$_SESSION['carrello']=implode(",",$carrello);
 //$carrello= array_values($carrello);
 $_SESSION['carrello']=implode(",",$carrello);//echo $_SESSION['carrello'];
-header('Location:cart.php?user='.$_SESSION[user].'&carrello='.$_SESSION[carrello]);
+header('Location:shopping-cart.php?user='.$_SESSION[user].'&carrello='.$_SESSION[carrello]);
 
 }
 
@@ -71,7 +71,7 @@ $carrello=explode(",",$_SESSION['carrello']);
 unset($carrello[$_SESSION['conta']-1]);
 $carrello=array_values($carrello);
 $_SESSION['carrello']=implode(",",$carrello);
-header('location:shoping-cart.php?user='.$_REQUEST[user].'&carrello='.$_SESSION[carrello]);
+header('location:shopping-cart.php?user='.$_REQUEST[user].'&carrello='.$_SESSION[carrello]);
 }
 
 
@@ -127,7 +127,7 @@ $_SESSION[totale]=$totale;
                                     </td>
                                     <td class="shoping__cart__item__close">
                                         <span >
-                                   <a href="product-detail.php?choice=cancella&user=<?=$_SESSION[user];?>&codice=<?=$_SESSION[codice];?>&categoria=<?=$_SESSION[categoria];?>&carrello=<?=$_SESSION[carrello];?>">X</a></span>
+                                   <a href="shopping-cart.php?choice=cancella&user=<?=$_SESSION[user];?>&codice=<?=$_SESSION[codice];?>&categoria=<?=$_SESSION[categoria];?>&carrello=<?=$_SESSION[carrello];?>">X</a></span>
                                
                                     </td>
                                 </tr>
