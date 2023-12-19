@@ -1,4 +1,4 @@
-#S_SESSION[elem] variabile che aggiorna la stringa elemento aggiunto nel product-cart.php dato come stringa:
+b#S_SESSION[elem] variabile che aggiorna la stringa elemento aggiunto nel product-cart.php dato come stringa:
 #S_SESSION[elem]=$_POST['art_']."*".$_POST['prezzo_']."*".$_POST['img_']."*".$_POST['cat_']."*".$_POST['cod_']."*".$_POST['quantity']; secondo il form con action =post
 #$_SESSION['carrello'] variabile che aggiorna il carrello $_SESSION['carrello']=$_REQUEST['carrello'].",".$_SESSION['elem'];
 <?
@@ -67,13 +67,13 @@ header('Location:'.$_SERVER[PHP_SELF].'?user='.$_SESSION[user].'&codice='.$_SESS
 <form  method="post" action='<?=$_SERVER[PHP_SELF];?>' enctype='multipart/form-data'>
 
 <?
-$connection2 = @mysqli_connect("localhost", "panificiotragnocl", "");
+$connection2 = @mysqli_connect("localhost", "user_db", "");
 if (mysqli_connect_errno())
   {
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
-@mysqli_select_db($connection2,"my_panificiotragnocl");
-$sqlsel= "Select * from Prodotti_de_panificiotragnocl where  codice_articolo='".$_SESSION[codice]."'";
+@mysqli_select_db($connection2,"my_db");
+$sqlsel= "Select * from Prodotti where  codice_articolo='".$_SESSION[codice]."'";
 
 $result=@mysqli_query($connection2,$sqlsel);
 
