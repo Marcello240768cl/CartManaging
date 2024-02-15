@@ -33,21 +33,66 @@ else  $_SESSION['select']="select * from ".$_SESSION['categoria'];
  
 
 <?
-#Se l' azione e' di inserimento elemento nel carrello trasmesso dal form con azione post
 if($_POST['ins_conf_submit'])
 {
 $_SESSION['elem']=$_POST['art_']."*".$_POST['prezzo_']."*".$_POST['img_']."*".$_POST['cat_']."*".$_POST['cod_']."*".$_POST['quantity'];
-if($_REQUEST['carrello']) $_SESSION['carrello']=$_REQUEST['carrello'].",".$_SESSION['elem'];
+//if($_REQUEST['carrello']) $_SESSION['carrello']=$_REQUEST['carrello'].",".$_SESSION['elem'];
 $carrello=array();
-$carrello=explode(",",$_POST['carrello']);
+$carrello=explode(",",$_SESSION['carrello']);
 $righe_l=count($carrello);
+#Se il carrello è vuoto
+if($righe_l==0) {$_SESSION['carrello']=$_SESSION['elem'];header('Location:product-detail.php?user='.$_REQUEST[user].'&carrello='.$_SESSION[carrello]);}
+#altrimenti
+else{
+      $fatto=false;
+
+      foreach($carrello as $carr)
+        {
+
+                      $elemento=explode("*",$carr);
+                      $nome_articolo=$elemento[0];
+                      $prezzo=$elemento[1];
+                      $dir_img=$elemento[2];
+                      $categoria=$elemento[3];
+                      $cod=$elemento[4];
+                      $quantita=$elemento[5];
 
 
-if(!in_array($_SESSION['elem'],$carrello))
-{
 
-#redirezioniamo la pagina con approprito url query aggionata
-header('Location:'.$_SERVER[PHP_SELF].'?user='.$_SESSION[user].'&codice='.$_SESSION[codice].'&categoria='.$_SESSION[categoria].'&carrello='.$_SESSION[carrello]);
+            if($quantita!=0){
+
+
+             #Se l'elemento del carrello ha codice diverso da quello dell' elemento da aggiungere
+             if($cod!=$_POST['cod_']) 
+              {
+                #vai avanti nella scansione di tutti gli elemeneti del carrello
+                $fatto=false;continue;
+              }
+             #se l'ha trovato esci dal loop for
+             else { 
+                $fatto=true;break;
+                   }
+                            }
+         }
+#Se l' elemento da aggiungere non fa parte del carrello
+if($fatto==false){array_push($carrello,$_SESSION['elem']);$carrello=array_values($carrello);
+$_SESSION['carrello']=implode(",",$carrello);//$_SESSION['carrello']=$_SESSION['carrello'].",".$_SESSION[elem];
+header('location:product-detail.php?user='.$_SESSION[user].'&carrello='.$_SESSION[carrello]);}
+#altrimenti
+else{
+$carr_elem="";
+$quantita_elem=strval($_POST['quantity']+$elemento[5]);//$carr_elem=$carr;
+$_SESSION[elem]=$_POST['art_']."*".$_POST['prezzo_']."*".$_POST['img_']."*".$_POST['cat_']."*".$_POST['cod_']."*".$quantita_elem."*".$_POST['peso_'];//."*".$_POST['sel_taglia_'];
+$carrello=explode(",",$_SESSION['carrello']);
+unset($carrello[array_search($carr,$carrello)]);
+$carrello=array_values($carrello);
+$_SESSION['carrello']=implode(",",$carrello);$_SESSION['carrello']=$_SESSION['carrello'].",".$_SESSION[elem];
+#redireziona alla pagina corrente e aggiorna il carrello nella stringa  dati
+header('location:product-detail.php?user='.$_SESSION[user].'&carrello='.$_SESSION[carrello]);
+
+}
+
+
 }
 
 }
